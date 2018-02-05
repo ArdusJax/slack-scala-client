@@ -235,6 +235,21 @@ class SlackApiClient(token: String) {
     extract[String](res, "ts")
   }
 
+  def postEphemeral(channelId: String, text: String, username: Option[String] = None, asUser: Option[Boolean] = None,
+                    parse: Option[String] = None, linkNames: Option[String] = None,
+                    attachments: Option[Seq[Attachment]] = None)(implicit system: ActorSystem): Future[String] = {
+    val res = makeApiMethodRequest (
+      "chat.postEphemeral",
+      "channel" -> channelId,
+      "text" -> text,
+      "username" -> username,
+      "as_user" -> asUser,
+      "parse" -> parse,
+      "link_names" -> linkNames,
+      "attachments" -> attachments.map(a => Json.stringify(Json.toJson(a))))
+    extract[String](res, "ts")
+  }
+
   def updateChatMessage(channelId: String, ts: String, text: String, asUser: Option[Boolean] = None)(implicit system: ActorSystem): Future[UpdateResponse] = {
     val params = Seq("channel" -> channelId, "ts" -> ts, "text" -> text)
     val res = makeApiMethodRequest("chat.update", asUser.map(b => params :+ ("as_user" -> b)).getOrElse(params): _*)

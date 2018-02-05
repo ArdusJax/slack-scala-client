@@ -1,5 +1,5 @@
 name := "slack-scala-client"
-version := "0.3.0"
+version := "0.4.0"
 scalaVersion := "2.12.4"
 //crossScalaVersion ++=Seq("2.11.11", "2.12.3")
 
